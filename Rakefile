@@ -1,17 +1,16 @@
 require 'rake'
 require 'spec'
-require 'spec/rake/spectask'
-require 'rake/rdoctask'
+require 'rspec/core/rake_task'
+require 'rdoc/task'
 require 'rubygems/specification'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 
 task :default => [:spec]
 
-Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = ['--options', "spec/spec.opts"]
-  t.spec_files = FileList['spec/**/*_spec.rb']
-  t.rcov = true
-  t.rcov_opts = ['--exclude', 'spec'] 
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = './spec/**/*_spec.rb'
+  #t.rcov = true
+  #t.rcov_opts = ['--exclude', 'spec'] 
 end
 
 Rake::RDocTask.new { |rdoc|
@@ -28,6 +27,6 @@ gemspec = File.read('currentcost-ruby.gemspec')
 spec = nil
 # Eval gemspec in SAFE=3 mode to emulate github build environment
 Thread.new { spec = eval("$SAFE = 3\n#{gemspec}") }.join
-Rake::GemPackageTask.new(spec) do |p|
+Gem::PackageTask.new(spec) do |p|
   p.gem_spec = spec
 end

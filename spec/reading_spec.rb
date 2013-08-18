@@ -53,10 +53,10 @@ describe CurrentCost::Reading do
     r = CurrentCost::Reading.from_xml(xml)    
     r.history.should_not be_nil
     r.history[:hours].size.should be(27)    
-    r.history[:hours][2][0].should be_close(0.0, float_tolerance)
-    r.history[:hours][4][0].should be_close(2.1, float_tolerance)
-    r.history[:hours][6][0].should be_close(1.9, float_tolerance)
-    r.history[:hours][26][0].should be_close(0.3, float_tolerance)
+    r.history[:hours][2][0].should be_within(float_tolerance).of(0.0)
+    r.history[:hours][4][0].should be_within(float_tolerance).of(2.1)
+    r.history[:hours][6][0].should be_within(float_tolerance).of(1.9)
+    r.history[:hours][26][0].should be_within(float_tolerance).of(0.3)
     r.history[:days].size.should be(32)
     r.history[:days][1][0].should be(10)
     r.history[:days][2][0].should be(13)
@@ -94,10 +94,10 @@ describe CurrentCost::Reading do
     r.history.should_not be_nil
     r.history[:hours].size.should be(21)
     r.history[:hours][4].size.should be(10)
-    r.history[:hours][4][0].should be_close(0.43, float_tolerance)
-    r.history[:hours][4][1].should be_close(0, float_tolerance)
-    r.history[:hours][6][0].should be_close(0.339, float_tolerance)
-    r.history[:hours][20][0].should be_close(0.36, float_tolerance)
+    r.history[:hours][4][0].should be_within(float_tolerance).of(0.43)
+    r.history[:hours][4][1].should be_within(float_tolerance).of(0)
+    r.history[:hours][6][0].should be_within(float_tolerance).of(0.339)
+    r.history[:hours][20][0].should be_within(float_tolerance).of(0.36)
   end
 
   it "should parse day history from CC128 XML output" do
@@ -107,10 +107,10 @@ describe CurrentCost::Reading do
     r.history.should_not be_nil
     r.history[:days].size.should be(6)
     r.history[:days][1].size.should be(10)
-    r.history[:days][1][0].should be_close(10.46, float_tolerance)
-    r.history[:days][1][1].should be_close(0, float_tolerance)
-    r.history[:days][2][0].should be_close(12.593, float_tolerance)
-    r.history[:days][5][0].should be_close(9.226, float_tolerance)
+    r.history[:days][1][0].should be_within(float_tolerance).of(10.46)
+    r.history[:days][1][1].should be_within(float_tolerance).of(0)
+    r.history[:days][2][0].should be_within(float_tolerance).of(12.593)
+    r.history[:days][5][0].should be_within(float_tolerance).of(9.226)
   end
 
 #  it "should parse month history from CC128 XML output" do
