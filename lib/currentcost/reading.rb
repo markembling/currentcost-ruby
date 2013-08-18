@@ -13,6 +13,10 @@ module CurrentCost
       doc = REXML::Document.new(xml)
       # Create reading object
       r = Reading.new
+      
+      # Copy raw XML into the raw field
+      r.raw_xml = xml
+      
       # Check version
       r.software_version = REXML::XPath.first(doc, "/msg/src/sver").text rescue nil
       if r.software_version.nil?
@@ -114,6 +118,8 @@ module CurrentCost
     attr_accessor :sensor
     # Historical data, represented as a hash. There is a hash entry for days, weeks, months, and years. Each of these is an array of sensors, each of which contains an array of historical kWh data.
     attr_accessor :history
+    # Contains the raw XML that went into this reading
+    attr_accessor :raw_xml
 
     # The sum of the current wattage for all channels, as shown on the meter
     def total_watts

@@ -27,6 +27,10 @@ describe CurrentCost::Reading do
   it "can include historical data" do
     CurrentCost::Reading.new.should respond_to(:history)
   end
+  
+  it "should include raw XML" do
+    CurrentCost::Reading.new.should respond_to(:raw_xml)
+  end
 
   it "should parse basic data from meter XML output" do
     xml = "<msg><date><dsb>00007</dsb><hr>23</hr><min>14</min><sec>57</sec></date><src><name>CC02</name><id>00077</id><type>1</type><sver>1.06</sver></src><ch1><watts>00365</watts></ch1><ch2><watts>00000</watts></ch2><ch3><watts>00000</watts></ch3><tmpr>23.3</tmpr></msg>"
@@ -45,6 +49,7 @@ describe CurrentCost::Reading do
     r.channels[1][:watts].should be(0)
     r.channels[2][:watts].should be(0)
     r.history.should be_nil
+    r.raw_xml.should == xml
   end
 
   it "should parse history from meter XML output" do
@@ -68,6 +73,7 @@ describe CurrentCost::Reading do
     r.history[:years].size.should be(5)
     r.history[:years][1][0].should be(10)
     r.history[:years][4][0].should be(600)
+    r.raw_xml.should == xml
   end
 
   it "should parse basic data from CC128 output" do
@@ -85,6 +91,7 @@ describe CurrentCost::Reading do
     r.channels.size.should be(1)
     r.channels[0][:watts].should be(349)
     r.history.should be_nil
+    r.raw_xml.should == xml
   end
 
   it "should parse hour history from CC128 XML output" do
@@ -98,6 +105,7 @@ describe CurrentCost::Reading do
     r.history[:hours][4][1].should be_within(float_tolerance).of(0)
     r.history[:hours][6][0].should be_within(float_tolerance).of(0.339)
     r.history[:hours][20][0].should be_within(float_tolerance).of(0.36)
+    r.raw_xml.should == xml
   end
 
   it "should parse day history from CC128 XML output" do
@@ -111,6 +119,7 @@ describe CurrentCost::Reading do
     r.history[:days][1][1].should be_within(float_tolerance).of(0)
     r.history[:days][2][0].should be_within(float_tolerance).of(12.593)
     r.history[:days][5][0].should be_within(float_tolerance).of(9.226)
+    r.raw_xml.should == xml
   end
 
 #  it "should parse month history from CC128 XML output" do
